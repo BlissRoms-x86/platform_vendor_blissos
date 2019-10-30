@@ -128,18 +128,6 @@ PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
 # Disable vendor restrictions
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images
-
-# Custom off-mode charger
-ifeq ($(WITH_BLISS_CHARGER),true)
-PRODUCT_PACKAGES += \
-    bliss_charger_res_images \
-    font_log.png \
-    libhealthd.bliss
-endif
-
 # Storage manager
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.storage_manager.enabled=true
