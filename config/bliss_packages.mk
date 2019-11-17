@@ -57,7 +57,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     LatinIME \
     DeskClock \
-    Recorder \
     ThemePicker \
     BlissUpdater \
     BlissPapers \
@@ -66,7 +65,10 @@ PRODUCT_PACKAGES += \
     GalleryGoPrebuilt \
     PixelThemes \
     AboutBliss \
-    BlissStatistics
+    BlissStatistics \
+    Contacts \
+    SafetyHubPrebuilt \
+    Dialer
 
 # Accents
 PRODUCT_PACKAGES += \
