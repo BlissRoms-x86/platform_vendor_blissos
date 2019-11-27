@@ -12,7 +12,7 @@ sed '/ lunch()/,/^}/!d'  build/envsetup.sh | sed 's/function lunch/function aosp
 source ${tmp_lunch}
 rm -f ${tmp_lunch}
 
-function apply_patches
+function apply-patches
 {
 
 	vendor/blissos/autopatch.sh
