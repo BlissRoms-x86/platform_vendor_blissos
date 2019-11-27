@@ -14,6 +14,14 @@
 # limitations under the License.
 #
 
+PRODUCT_MAKEFILES := \
+	$(LOCAL_DIR)/bliss_arm.mk \
+	$(LOCAL_DIR)/bliss_arm64.mk \
+	$(LOCAL_DIR)/bliss_x86.mk \
+	$(LOCAL_DIR)/bliss_x86_64.mk \
+	$(LOCAL_DIR)/bliss_os_x86.mk \
+	$(LOCAL_DIR)/bliss_os_x86_64.mk \
+
 COMMON_LUNCH_CHOICES := \
     bliss_arm-userdebug \
     bliss_arm64-userdebug \
