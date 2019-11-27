@@ -13,7 +13,7 @@
 # limitations under the License.
 
 $(call inherit-product, device/generic/x86_64/android_x86_64.mk)
-$(call inherit-product, vendor/bliss/config/common.mk)
+$(call inherit-product, vendor/blissos/config/common.mk)
 
 # Allow building otatools
 TARGET_FORCE_OTA_PACKAGE := true

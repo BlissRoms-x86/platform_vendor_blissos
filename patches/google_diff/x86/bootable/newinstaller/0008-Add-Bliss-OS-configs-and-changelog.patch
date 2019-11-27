@@ -1,0 +1,109 @@
+From cbd142e48aca3aaf1321d5c4eaf5a328c4ec73c9 Mon Sep 17 00:00:00 2001
+From: Unknown <electrikjesus@gmail.com>
+Date: Sat, 16 Nov 2019 21:34:41 -0500
+Subject: [PATCH 8/8] Add Bliss OS configs and changelog
+
+---
+ Android.mk            | 31 ++++++++++++++++++++++++++++++-
+ bliss/bliss_colors.mk | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+), 1 deletion(-)
+ create mode 100644 bliss/bliss_colors.mk
+
+diff --git a/Android.mk b/Android.mk
+index 178ec43..5a56bed 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -15,7 +15,7 @@
+ ifneq ($(filter x86%,$(TARGET_ARCH)),)
+ LOCAL_PATH := $(call my-dir)
+ include $(CLEAR_VARS)
+-
++RELEASE_OS_TITLE := Bliss-OS
+ include $(CLEAR_VARS)
+ LOCAL_IS_HOST_MODULE := true
+ LOCAL_SRC_FILES := rpm/qemu-android
+@@ -35,6 +35,9 @@ define build-squashfs-target
+ endef
+ endif
+ 
++# Bliss Build Colors
++include $(LOCAL_PATH)/bliss/bliss_colors.mk
++
+ initrd_dir := $(LOCAL_PATH)/initrd
+ initrd_bin := \
+ 	$(initrd_dir)/init \
+@@ -101,6 +104,32 @@ $(ISO_IMAGE): $(boot_dir) $(BUILT_IMG)
+ 		-no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot \
+ 		-input-charset utf-8 -V "$(if $(RELEASE_OS_TITLE),$(RELEASE_OS_TITLE),Android-x86) LiveCD" -o $@ $^
+ 	$(hide) isohybrid --uefi $@ || echo -e "isohybrid not found.\nInstall syslinux 4.0 or higher if you want to build a usb bootable iso."
++	
++	@echo -e ${CL_CYN}""${CL_CYN}
++	@echo -e ${CL_CYN}"      ___           ___                   ___           ___      "${CL_CYN}
++	@echo -e ${CL_CYN}"     /\  \         /\__\      ___        /\  \         /\  \     "${CL_CYN}
++	@echo -e ${CL_CYN}"    /::\  \       /:/  /     /\  \      /::\  \       /::\  \    "${CL_CYN}
++	@echo -e ${CL_CYN}"   /:/\:\  \     /:/  /      \:\  \    /:/\ \  \     /:/\ \  \   "${CL_CYN}
++	@echo -e ${CL_CYN}"  /::\~\:\__\   /:/  /       /::\__\  _\:\~\ \  \   _\:\~\ \  \  "${CL_CYN}
++	@echo -e ${CL_CYN}" /:/\:\ \:\__\ /:/__/     __/:/\/__/ /\ \:\ \ \__\ /\ \:\ \ \__\ "${CL_CYN}
++	@echo -e ${CL_CYN}" \:\~\:\/:/  / \:\  \    /\/:/  /    \:\ \:\ \/__/ \:\ \:\ \/__/ "${CL_CYN}
++	@echo -e ${CL_CYN}"  \:\ \::/  /   \:\  \   \::/__/      \:\ \:\__\    \:\ \:\__\   "${CL_CYN}
++	@echo -e ${CL_CYN}"   \:\/:/  /     \:\  \   \:\__\       \:\/:/  /     \:\/:/  /   "${CL_CYN}
++	@echo -e ${CL_CYN}"    \::/__/       \:\__\   \/__/        \::/  /       \::/  /    "${CL_CYN}
++	@echo -e ${CL_CYN}"     ~~            \/__/                 \/__/         \/__/     "${CL_CYN}
++	@echo -e ${CL_CYN}""${CL_CYN}
++	@echo -e ${CL_CYN}"===========-Bliss-x86 Package Complete-==========="${CL_RST}
++	@echo -e ${CL_CYN}"Zip: "${CL_CYN} $(ISO_IMAGE)${CL_RST}
++	@echo -e ${CL_CYN}"Size:"${CL_CYN}" `ls -lah $(ISO_IMAGE) | cut -d ' ' -f 5`"${CL_RST}
++	@echo -e ${CL_CYN}"=================================================="${CL_RST}
++	@echo -e ${CL_CYN}"        Have A Truly Blissful Experience"          ${CL_RST}
++	@echo -e ${CL_CYN}"=================================================="${CL_RST}
++	@echo -e ""
++
++	# Generate Bliss Changelog
++	$(hide) ./vendor/bliss/tools/changelog
++	$(hide) mv $(PRODUCT_OUT)/Changelog.txt $(PRODUCT_OUT)/Changelog-$(BLISS_VERSION)-$(shell date +%Y%m%d%H%M).txt
++	
+ 	@echo -e "\n\n$@ is built successfully.\n\n"
+ 
+ rpm: $(wildcard $(LOCAL_PATH)/rpm/*) $(BUILT_IMG)
+diff --git a/bliss/bliss_colors.mk b/bliss/bliss_colors.mk
+new file mode 100644
+index 0000000..cd82f65
+--- /dev/null
++++ b/bliss/bliss_colors.mk
+@@ -0,0 +1,33 @@
++# Copyright (C) 2018 BlissOS Project
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++# http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++# Bliss Color Definations
++CLR_RED=$(shell tput setaf 1)
++CLR_GRN=$(shell tput setaf 2)
++CLR_YLW=$(shell tput setaf 3)
++CLR_BLU=$(shell tput setaf 4)
++CLR_MAG=$(shell tput setaf 5)
++CLR_CYN=$(shell tput setaf 6)
++CLR_WHT=$(shell tput setaf 7)
++CLR_BOLD=$(shell tput bold)
++CLR_RST=$(shell tput sgr0)
++
++# Shell color defs:
++CL_RED="\033[31m"
++CL_GRN="\033[32m"
++CL_YLW="\033[33m"
++CL_BLU="\033[34m"
++CL_MAG="\033[35m"
++CL_CYN="\033[36m"
++CL_RST="\033[0m"
+-- 
+2.17.1
+

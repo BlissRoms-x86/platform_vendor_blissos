@@ -14,7 +14,7 @@ BASE_NAME=default_wallpaper.png
 BASE_WALLPAPER=$1
 
 #OUTPUT WALLPAPERS LOCATION
-OUTPUT_PACKAGE=$(echo "$PWD"/vendor/bliss/overlay/common/frameworks/base/core/res/res/)
+OUTPUT_PACKAGE=$(echo "$PWD"/vendor/blissos/overlay/common/frameworks/base/core/res/res/)
 
 #STANDARD IMAGE SIZES
 HDPI_RES="1080x960"

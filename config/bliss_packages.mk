@@ -88,4 +88,4 @@ PRODUCT_PACKAGES += \
 
 # OmniJaws Permission
 PRODUCT_COPY_FILES += \
-    vendor/bliss/config/permissions/org.omnirom.omnijaws.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/org.omnirom.omnijaws.xml
+    vendor/blissos/config/permissions/org.omnirom.omnijaws.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/org.omnirom.omnijaws.xml

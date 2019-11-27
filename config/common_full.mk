@@ -1,5 +1,5 @@
 # Inherit common Bliss stuff
-$(call inherit-product, vendor/bliss/config/common.mk)
+$(call inherit-product, vendor/blissos/config/common.mk)
 
 PRODUCT_SIZE := full
 
