@@ -1,7 +1,7 @@
-include vendor/bliss/config/BoardConfigKernel.mk
+include vendor/blissos/config/BoardConfigKernel.mk
 
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
-include vendor/bliss/config/BoardConfigQcom.mk
+include vendor/blissos/config/BoardConfigQcom.mk
 endif
 
-include vendor/bliss/config/BoardConfigSoong.mk
+include vendor/blissos/config/BoardConfigSoong.mk

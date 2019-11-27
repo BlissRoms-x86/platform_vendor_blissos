@@ -18,5 +18,8 @@ PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/bliss_arm.mk \
     $(LOCAL_DIR)/bliss_arm64.mk \
     $(LOCAL_DIR)/bliss_x86.mk \
-    $(LOCAL_DIR)/bliss_x86_64.mk
+    $(LOCAL_DIR)/bliss_x86_64.mk \
+    $(LOCAL_DIR)/bliss_os_x86.mk \
+    $(LOCAL_DIR)/bliss_os_x86_64.mk \
+    
 
