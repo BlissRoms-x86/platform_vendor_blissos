@@ -8,4 +8,4 @@
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 LOCAL_PATH := $(call my-dir)
-
+include vendor/blissos/prebuilt/common/Android.mk

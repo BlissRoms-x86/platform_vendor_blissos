@@ -1,10 +1,18 @@
 # Inherit common Bliss stuff
-$(call inherit-product, vendor/blissos/config/common.mk)
-$(call inherit-product, vendor/blissos/config/common_full.mk)
-$(call inherit-product, vendor/blissos/config/BoardConfigBlissOS.mk)
+$(call inherit-product,vendor/blissos/config/common.mk)
+$(call inherit-product,vendor/blissos/config/common_full.mk)
+$(call inherit-product,vendor/blissos/config/BoardConfigBlissOS.mk)
+$(call inherit-product,vendor/blissos/config/common_full_tablet_wifionly.mk)
+$(call inherit-product,vendor/blissos/config/bliss_audio.mk)
+# $(call inherit-product-if-exists,vendor/blissos/addon.mk)
+
+# Get proprietary files if any exists
+# $(call inherit-product,vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
+# $(call inherit-product,vendor/google/chromeos-x86/target/houdini.mk)
+# $(call inherit-product,vendor/google/chromeos-x86/target/widevine.mk)
 
 # Boot animation
-TARGET_SCREEN_HEIGHT := 810
+TARGET_SCREEN_HEIGHT := 1080
 TARGET_SCREEN_WIDTH := 1080
 TARGET_BOOTANIMATION_HALF_RES := true
 
@@ -44,7 +52,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGE_OVERLAYS += vendor/blissos/overlay/x86
 
 # PRODUCT_PROPERTY_OVERRIDES += \
-#     ro.mot.deep.sleep.supported=true
+    ro.mot.deep.sleep.supported=true
 
 PRODUCT_SHIPPING_API_LEVEL := 19
 
@@ -62,17 +70,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.debug.multi_window=true
     persist.sys.debug.desktop_mode=true
-
-# Get proprietary files if any exists
-$(call inherit-product,vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
-$(call inherit-product,vendor/google/chromeos-x86/target/houdini.mk)
-$(call inherit-product,vendor/google/chromeos-x86/target/widevine.mk)
-
-# Get Bliss configs if any exists
-$(call inherit-product,vendor/blissos/config/common.mk)
-$(call inherit-product,vendor/blissos/config/common_full_tablet_wifionly.mk)
-$(call inherit-product,vendor/blissos/config/bliss_audio.mk)
-# $(call inherit-product-if-exists,vendor/blissos/addon.mk)
 
 # Copy all Bliss-specific init rc files
 $(foreach f,$(wildcard vendor/blissos/prebuilt/common/etc/init/*.rc),\
