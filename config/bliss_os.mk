@@ -78,3 +78,19 @@ $(eval PRODUCT_COPY_FILES += $(f):system/etc/init/$(notdir $f)))
 $(foreach f,$(wildcard vendor/blissos/prebuilt/common/bin/*),\
 $(eval PRODUCT_COPY_FILES += $(f):system/bin/$(notdir $f)))
 
+# Optional packages
+PRODUCT_PACKAGES += \
+    LiveWallpapersPicker \
+    PhotoTable \
+    Terminal
+    
+# Custom Lineage packages
+PRODUCT_PACKAGES += \
+    Eleven \
+    Jelly \
+    htop \
+    nano 
+
+# Exchange support
+PRODUCT_PACKAGES += \
+    Exchange2
