@@ -144,6 +144,7 @@ echo -e ${CL_CYN}""${CL_CYN}
 
 if [ "$2" = "foss" ];then
    export USE_OPENGAPPS=false
+   export USE_FDROID=false
    export USE_FOSS=true
    export USE_GO=false
    export USE_GMS=false
@@ -155,6 +156,7 @@ if [ "$2" = "foss" ];then
    
 elif [ "$2" = "gapps" ];then
    export USE_FOSS=false
+   export USE_FDROID=false
    export USE_GO=false
    export USE_OPENGAPPS=true
    export USE_GMS=false
@@ -166,6 +168,7 @@ elif [ "$2" = "gapps" ];then
    
 elif [ "$2" = "go" ];then
    export USE_GO=true
+   export USE_FDROID=false
    export USE_FOSS=false
    export USE_OPENGAPPS=false
    export USE_GMS=false
@@ -178,6 +181,7 @@ elif [ "$2" = "go" ];then
    
 elif [ "$2" = "none" ];then
    export USE_FOSS=false
+   export USE_FDROID=false
    export USE_GO=false
    export USE_OPENGAPPS=false
    export USE_GMS=false
@@ -189,6 +193,7 @@ elif [ "$2" = "none" ];then
    
 elif [ "$2" = "gms" ];then
    export USE_GMS=true
+   export USE_FDROID=false
    export USE_FOSS=false
    export USE_GO=false
    export USE_OPENGAPPS=false
@@ -211,9 +216,37 @@ elif [ "$2" = "fdroid" ];then
    echo -e ""
    
 else
-   romBranch="$2"
-   echo "Using branch $romBranch for repo syning."
+   export USE_FDROID=false
+   export USE_GMS=false
+   export USE_FOSS=false
+   export USE_GO=false
+   export USE_OPENGAPPS=false
+   echo -e ${CL_CYN}""${CL_CYN}
+   echo -e ${CL_CYN}"======-Bliss-OS(x86) Building with no additions-======"${CL_RST}
+   echo -e ${CL_CYN}"      Thank you for contributing to our project"       ${CL_RST}
+   echo -e ${CL_CYN}"======================================================"${CL_RST}
+   echo -e ""
    
+fi
+
+if [ "$3" = "croshoudini" ];then
+	export USE_HOUDINI=true
+
+elif [ "$3" = "croswidevine" ];then
+	export USE_WIDEVINE=true
+
+elif [ "$3" = "crosboth" ];then
+	export USE_HOUDINI=true
+	export USE_WIDEVINE=true
+
+elif [ "$3" = "crosnone" ];then
+	export USE_HOUDINI=false
+	export USE_WIDEVINE=false
+        
+else
+	export USE_HOUDINI=false
+	export USE_WIDEVINE=false
+
 fi
 
 if  [ $sync == "y" ];then
