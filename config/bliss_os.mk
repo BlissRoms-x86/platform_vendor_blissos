@@ -1,15 +1,12 @@
 # Inherit common Bliss stuff
-$(call inherit-product,vendor/blissos/config/common.mk)
-$(call inherit-product,vendor/blissos/config/common_full.mk)
-$(call inherit-product,vendor/blissos/config/BoardConfigBlissOS.mk)
-$(call inherit-product,vendor/blissos/config/common_full_tablet_wifionly.mk)
-$(call inherit-product,vendor/blissos/config/bliss_audio.mk)
-# $(call inherit-product-if-exists,vendor/blissos/addon.mk)
+$(call inherit-product, vendor/blissos/config/common.mk)
+$(call inherit-product, vendor/blissos/config/common_full.mk)
+$(call inherit-product, vendor/blissos/config/BoardConfigBlissOS.mk)
+$(call inherit-product, vendor/blissos/config/common_full_tablet_wifionly.mk)
+$(call inherit-product, vendor/blissos/config/bliss_audio.mk)
+$(call inherit-product, vendor/blissos/addon.mk)
+include vendor/blissos/config/BoardConfigBlissOS.mk
 
-# Get proprietary files if any exists
-# $(call inherit-product,vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
-# $(call inherit-product,vendor/google/chromeos-x86/target/houdini.mk)
-# $(call inherit-product,vendor/google/chromeos-x86/target/widevine.mk)
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1080
@@ -17,7 +14,7 @@ TARGET_SCREEN_WIDTH := 1080
 TARGET_BOOTANIMATION_HALF_RES := true
 
 ifeq ($(USE_FDROID),true)
-$(call inherit-product,vendor/fdroid/config.mk)
+$(call inherit-product, vendor/fdroid/config.mk)
 endif
 
 ifeq ($(USE_FOSS),true)
@@ -44,15 +41,21 @@ PRODUCT_PACKAGES += \
 
 endif
 
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+	persist.sys.nativebridge=1 \
+	ro.enable.native.bridge.exec=1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.mot.deep.sleep.supported=true \
+    persist.sys.nativebridge=1 \
+	ro.enable.native.bridge.exec=1
+    
 # Required packages
 PRODUCT_PACKAGES += \
     LatinIME
 
 # Include Bliss x86 overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/blissos/overlay/x86
-
-# PRODUCT_PROPERTY_OVERRIDES += \
-    ro.mot.deep.sleep.supported=true
 
 PRODUCT_SHIPPING_API_LEVEL := 19
 
@@ -63,8 +66,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.print.xml:system/etc/permissions/android.software.print.xml \
     frameworks/native/data/etc/android.software.webview.xml:system/etc/permissions/android.software.webview.xml \
     frameworks/native/data/etc/android.hardware.gamepad.xml:system/etc/permissions/android.hardware.gamepad.xml \
-    $(foreach f,$(wildcard $(LOCAL_PATH)/prebuilt/common/alsa/*),$(f):$(subst $(LOCAL_PATH),system/etc,$(f))) \
-    $(foreach f,$(wildcard $(LOCAL_PATH)/prebuilt/common/idc/*.idc $(LOCAL_PATH)/prebuilt/common/keylayout/*.kl),$(f):$(subst $(LOCAL_PATH),system/usr,$(f)))
 
 # Enable MultiWindow
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -73,10 +74,83 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Copy all Bliss-specific init rc files
 $(foreach f,$(wildcard vendor/blissos/prebuilt/common/etc/init/*.rc),\
-$(eval PRODUCT_COPY_FILES += $(f):system/etc/init/$(notdir $f)))
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/etc/init/$(notdir $f)))
 
 $(foreach f,$(wildcard vendor/blissos/prebuilt/common/bin/*),\
-$(eval PRODUCT_COPY_FILES += $(f):system/bin/$(notdir $f)))
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/bin/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/blissos/prebuilt/common/media/alarms/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/media/alarms/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/blissos/prebuilt/common/media/notifications/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/media/notifications/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/blissos/prebuilt/common/media/ringtones/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/media/ringtones/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/blissos/prebuilt/common/alsa/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/etc/alsa/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/blissos/prebuilt/common/idc/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/usr/idc/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/blissos/prebuilt/common/keylayout/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/$(notdir $f)))
+
+# Houdini addons
+ifeq ($(USE_HOUDINI),true)
+# Get proprietary files if any exists
+$(call inherit-product, vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
+$(call inherit-product, vendor/google/chromeos-x86/target/houdini.mk)
+
+WITH_NATIVE_BRIDGE := true
+# TARGET_CPU_ABI2 must be set to make soong build additional ARM code
+# However, if no native bridge is bundled, the system does not support
+# ARM binaries by default, yet it indicates support through
+# ro.product.cpu.abi2 in build.prop.
+
+# Attempt to reset ro.product.cpu.abi2 using
+# https://github.com/LineageOS/android_build/commit/94282042cac8dc66e9935c8d7455bd323b0b6716
+PRODUCT_BUILD_PROP_OVERRIDES += TARGET_CPU_ABI2=
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.dalvik.vm.isa.arm=x86 \
+    ro.enable.native.bridge.exec=1 \
+    ro.dalvik.vm.native.bridge=libhoudini.so
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/bin/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/bin/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/lib/*.so),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/lib/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/lib/arm/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/lib/arm/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/etc/binfmt_misc/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/etc/binfmt_misc/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/etc/init/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/etc/init/$(notdir $f)))
+
+endif
+
+# Widevine addons
+ifeq ($(USE_WIDEVINE),true)
+
+# Get proprietary files if any exists
+$(call inherit-product, vendor/google/chromeos-x86/target/widevine.mk)
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/widevine/system/bin/hw/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/vendor/bin/hw/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/widevine/system/lib/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/vendor/lib/$(notdir $f)))
+
+$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/widevine/system/etc/init/*),\
+	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/vendor/etc/init/$(notdir $f)))
+
+endif 
 
 # Optional packages
 PRODUCT_PACKAGES += \
@@ -93,4 +167,6 @@ PRODUCT_PACKAGES += \
 
 # Exchange support
 PRODUCT_PACKAGES += \
-    Exchange2
+    Exchange2 \
+    bootanimation.zip 
+    

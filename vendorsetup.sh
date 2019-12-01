@@ -19,6 +19,32 @@ function apply-patches
 
 }
 
+function get-cros-files-x86
+{
+	echo "Setting up Proprietary environment for: $1"
+	lunch android_x86-userdebug
+	echo "Building proprietary tools... This might take a little..."
+	echo "Be prepared to enter root password in order to mount the cros images and unpack things"
+	cd vendor/google/chromeos-x86
+	./extract-files.sh
+	cd ..
+	cd ..
+	cd ..
+}
+
+function get-cros-files-x86_64
+{
+	echo "Setting up Proprietary environment for: $1"
+	lunch android_x86_64-userdebug
+	echo "Building proprietary tools... This might take a little..."
+	echo "Be prepared to enter root password in order to mount the cros images and unpack things"
+	cd vendor/google/chromeos-x86
+	./extract-files.sh
+	cd ..
+	cd ..
+	cd ..
+}
+
 function build-x86()
 {
 	bash vendor/blissos/build-x86.sh $1 $2 $3

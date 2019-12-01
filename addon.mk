@@ -6,10 +6,26 @@ include $(CLEAR_VARS)
 # Copy files
 
 define addon-copy-to-system
-$(shell python "vendor/x86/copy_files.py" "vendor/x86/$(1)/" "$(2)" "$(PLATFORM_SDK_VERSION)")
+$(shell python "vendor/blissos/copy_files.py" "vendor/google/chromeos-x86/proprietary/$(1)/" "$(2)" "$(PLATFORM_SDK_VERSION)")
 endef
 
+# Houdini addons
+ifeq ($(USE_HOUDINI),true)
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,houdini,bin) \
 
-PRODUCT_COPY_FILES += $(call addon-copy-to-system,system,bin) \
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,houdini,lib) \
 
-PRODUCT_COPY_FILES += $(call addon-copy-to-system,system,lib) \
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,houdini,etc) \
+
+endif
+
+# Widevine addons
+ifeq ($(USE_WIDEVINE),true)
+
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,widevine,vendor/bin) \
+
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,widevine,vendor/lib) \
+
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,widevine,vendor/etc) \
+
+endif
