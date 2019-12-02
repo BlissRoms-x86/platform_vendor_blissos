@@ -99,6 +99,7 @@ $(foreach f,$(wildcard vendor/blissos/prebuilt/common/keylayout/*),\
 
 # Houdini addons
 ifeq ($(USE_HOUDINI),true)
+
 # Get proprietary files if any exists
 $(call inherit-product, vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
 $(call inherit-product, vendor/google/chromeos-x86/target/houdini.mk)
@@ -118,21 +119,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.enable.native.bridge.exec=1 \
     ro.dalvik.vm.native.bridge=libhoudini.so
 
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/bin/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/bin/$(notdir $f)))
-
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/lib/*.so),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/lib/$(notdir $f)))
-
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/lib/arm/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/lib/arm/$(notdir $f)))
-
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/etc/binfmt_misc/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/etc/binfmt_misc/$(notdir $f)))
-
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/houdini/system/etc/init/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/etc/init/$(notdir $f)))
-
 endif
 
 # Widevine addons
@@ -141,32 +127,26 @@ ifeq ($(USE_WIDEVINE),true)
 # Get proprietary files if any exists
 $(call inherit-product, vendor/google/chromeos-x86/target/widevine.mk)
 
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/widevine/system/bin/hw/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/vendor/bin/hw/$(notdir $f)))
-
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/widevine/system/lib/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/vendor/lib/$(notdir $f)))
-
-$(foreach f,$(wildcard vendor/google/chromeos-x86/proprietary/widevine/system/etc/init/*),\
-	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/vendor/etc/init/$(notdir $f)))
-
-endif 
+endif
 
 # Optional packages
 PRODUCT_PACKAGES += \
     LiveWallpapersPicker \
     PhotoTable \
     Terminal
-    
+
 # Custom Lineage packages
 PRODUCT_PACKAGES += \
     Eleven \
     Jelly \
     htop \
-    nano 
+    nano
 
 # Exchange support
 PRODUCT_PACKAGES += \
     Exchange2 \
-    bootanimation.zip 
+
+# Boot Animation
+PRODUCT_PACKAGES += \
+    bootanimation.zip
     
