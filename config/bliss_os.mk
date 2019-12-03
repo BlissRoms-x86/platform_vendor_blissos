@@ -149,4 +149,7 @@ PRODUCT_PACKAGES += \
 # Boot Animation
 PRODUCT_PACKAGES += \
     bootanimation.zip
+
+PRODUCT_COPY_FILES += \
+    vendor/blissos/bootanimation/bootanimation.zip:system/media/bootanimation.zip
     
