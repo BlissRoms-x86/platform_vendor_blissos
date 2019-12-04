@@ -147,8 +147,8 @@ PRODUCT_PACKAGES += \
     Exchange2 \
 
 # Boot Animation
-PRODUCT_PACKAGES += \
-    bootanimation.zip
+# PRODUCT_PACKAGES += \
+#     bootanimation.zip
 
 PRODUCT_COPY_FILES += \
     vendor/blissos/bootanimation/bootanimation.zip:system/media/bootanimation.zip
