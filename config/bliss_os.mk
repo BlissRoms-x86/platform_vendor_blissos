@@ -137,10 +137,14 @@ PRODUCT_PACKAGES += \
 
 # Custom Lineage packages
 PRODUCT_PACKAGES += \
+    htop \
+    nano 
+    
+# Remove packages
+PRODUCT_PACKAGES -= \
     Eleven \
     Jelly \
-    htop \
-    nano
+    Launcher3 \
 
 # Exchange support
 PRODUCT_PACKAGES += \
