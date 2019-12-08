@@ -13,11 +13,13 @@ TARGET_SCREEN_HEIGHT := 1080
 TARGET_SCREEN_WIDTH := 1080
 TARGET_BOOTANIMATION_HALF_RES := true
 
-ifeq ($(USE_FDROID),true)
-$(call inherit-product, vendor/fdroid/config.mk)
+# If using gms
+ifeq ($(USE_GMS),true)
+$(call inherit-product, vendor/gms/config.mk)
 endif
 
-ifeq ($(USE_FOSS),true)
+# If using fdroid
+ifeq ($(USE_FDROID),true)
 $(call inherit-product-if-exists, vendor/foss/foss.mk)
 # Get GMS
 $(call inherit-product-if-exists,vendor/microg/microg.mk)
@@ -139,12 +141,20 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     htop \
     nano 
-    
+
+# Set Bliss Desktop Mode by default
+# Use 'export BLISS_DESKTOPMODE=true' or set 
+# 'BLISS_DESKTOPMODE := true' within BoardConfig.mk. 
+ifeq ($(BLISS_DESKTOPMODE),true)
+
 # Remove packages
 PRODUCT_PACKAGES -= \
     Eleven \
     Jelly \
     Launcher3 \
+
+endif
+
 
 # Exchange support
 PRODUCT_PACKAGES += \

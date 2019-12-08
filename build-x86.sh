@@ -18,6 +18,7 @@ sync="n"
 patch="n"
 proprietary="n"
 romBranch=""
+desktopmode="n"
 
 if [ -z "$USER" ];then
         export USER="$(id -un)"
@@ -41,6 +42,7 @@ do
       echo "options: -s | --sync: Repo syncs the rom (clears out patches), then reapplies patches to needed repos"
       echo "		 -p | --patch: Run the patches only"
       echo "		 -r | --proprietary: build needed items from proprietary vendor (non-public)"
+      echo "		 -d | --desktopmode: Duild without any traditional launchers and only use Taskbar/TSL from @farmerbb"
       echo "buildVariants: "
       echo "android_x86-user, android_x86-userdebug, android_x86-eng,  "
       echo "android_x86_64-user, android_x86_64-userdebug, android_x86_64-eng"
@@ -66,6 +68,10 @@ do
     -r | --proprietary)
       proprietary="y";
       echo "proprietary selected."
+      ;;
+    -d | --desktopmode)
+	  desktopmode="y";
+	  echo "desktop mode selected"
       ;;
   # ...
 
@@ -242,11 +248,15 @@ elif [ "$3" = "crosboth" ];then
 elif [ "$3" = "crosnone" ];then
 	export USE_HOUDINI=false
 	export USE_WIDEVINE=false
-        
+
 else
 	export USE_HOUDINI=false
 	export USE_WIDEVINE=false
 
+fi
+
+if [ $desktopmode == "y" ];then
+	export BLISS_DESKTOPMODE=true
 fi
 
 if  [ $sync == "y" ];then
