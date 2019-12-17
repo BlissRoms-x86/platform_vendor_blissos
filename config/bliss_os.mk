@@ -13,8 +13,8 @@ TARGET_SCREEN_HEIGHT := 1080
 TARGET_SCREEN_WIDTH := 1080
 TARGET_BOOTANIMATION_HALF_RES := true
 
-ifeq ($(USE_FDROID),true)
-$(call inherit-product, vendor/fdroid/config.mk)
+ifeq ($(USE_GMS),true)
+$(call inherit-product, vendor/gms/config.mk)
 endif
 
 ifeq ($(USE_FOSS),true)
