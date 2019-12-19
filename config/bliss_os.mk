@@ -48,9 +48,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 	ro.enable.native.bridge.exec=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.mot.deep.sleep.supported=true \
-    persist.sys.nativebridge=1 \
-	ro.enable.native.bridge.exec=1
+    ro.mot.deep.sleep.supported=true 
     
 # Required packages
 PRODUCT_PACKAGES += \
@@ -148,14 +146,17 @@ PRODUCT_PACKAGES += \
 ifeq ($(BLISS_DESKTOPMODE),true)
 
 # Remove packages
-PRODUCT_PACKAGES -= \
+GAPPS_EXCLUDED_PACKAGES += \
     Eleven \
     Jelly \
     Launcher3 \
 
 endif
 
-
+# We add in gBoard now, so make it override latinIME
+GAPPS_EXCLUDED_PACKAGES += \
+    LatinIME \
+    
 # Exchange support
 PRODUCT_PACKAGES += \
     Exchange2 \
@@ -163,6 +164,15 @@ PRODUCT_PACKAGES += \
 # Boot Animation
 # PRODUCT_PACKAGES += \
 #     bootanimation.zip
+
+ifeq ($(USE_X86NB),true)
+
+# Remove packages
+PRODUCT_PACKAGES += \
+    libnb-qemu \
+    libnb-qemu-guest
+
+endif
 
 PRODUCT_COPY_FILES += \
     vendor/blissos/bootanimation/bootanimation.zip:system/media/bootanimation.zip

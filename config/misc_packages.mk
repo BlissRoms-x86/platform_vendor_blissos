@@ -26,8 +26,6 @@ PRODUCT_PACKAGES += \
     AudioFX \
     Backgrounds \
     LineageSettingsProvider \
-    Eleven \
-    Jelly \
     LockClock \
     WeatherProvider
 
@@ -49,3 +47,11 @@ PRODUCT_PACKAGES += \
     LineagePurpleAccent \
     LineageRedAccent \
     LineageYellowAccent
+
+ifneq ($(BLISS_DESKTOPMODE),true)
+
+PRODUCT_PACKAGES += \
+    Eleven \
+    Jelly \
+
+endif
