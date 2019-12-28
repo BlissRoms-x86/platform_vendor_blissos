@@ -237,13 +237,28 @@ fi
 
 if [ "$3" = "croshoudini" ];then
 	export USE_HOUDINI=true
+	echo -e ${CL_CYN}""${CL_CYN}
+	echo -e ${CL_CYN}"======-Bliss-OS(x86) Building with Houdini addon-====="${CL_RST}
+	echo -e ${CL_CYN}"Source: https://github.com/me176c-dev/android_vendor_google_chromeos-x86 "${CL_RST}
+	echo -e ${CL_CYN}"======================================================"${CL_RST}
+	echo -e ""
 
 elif [ "$3" = "croswidevine" ];then
 	export USE_WIDEVINE=true
+	echo -e ${CL_CYN}""${CL_CYN}
+	echo -e ${CL_CYN}"=====-Bliss-OS(x86) Building with Widevine addon-====="${CL_RST}
+	echo -e ${CL_CYN}"Source: https://github.com/me176c-dev/android_vendor_google_chromeos-x86 "${CL_RST}
+	echo -e ${CL_CYN}"======================================================"${CL_RST}
+	echo -e ""
 
 elif [ "$3" = "crosboth" ];then
 	export USE_HOUDINI=true
 	export USE_WIDEVINE=true
+	echo -e ${CL_CYN}""${CL_CYN}
+	echo -e ${CL_CYN}"====-Bliss-OS(x86) Building w/ Widevine & Houdini-===="${CL_RST}
+	echo -e ${CL_CYN}"Source: https://github.com/me176c-dev/android_vendor_google_chromeos-x86 "${CL_RST}
+	echo -e ${CL_CYN}"======================================================"${CL_RST}
+	echo -e ""
 
 elif [ "$3" = "crosnone" ];then
 	export USE_HOUDINI=false

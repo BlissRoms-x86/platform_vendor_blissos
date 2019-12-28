@@ -1,3 +1,8 @@
+my_path := $(call my-dir)
+
+LOCAL_PATH := $(my_path)
+include $(CLEAR_VARS)
+
 # Inherit common Bliss stuff
 $(call inherit-product, vendor/blissos/config/common.mk)
 $(call inherit-product, vendor/blissos/config/common_full.mk)
@@ -97,38 +102,6 @@ $(foreach f,$(wildcard vendor/blissos/prebuilt/common/idc/*),\
 $(foreach f,$(wildcard vendor/blissos/prebuilt/common/keylayout/*),\
 	$(eval PRODUCT_COPY_FILES += $(f):$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/$(notdir $f)))
 
-# Houdini addons
-ifeq ($(USE_HOUDINI),true)
-
-# Get proprietary files if any exists
-$(call inherit-product, vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
-$(call inherit-product, vendor/google/chromeos-x86/target/houdini.mk)
-
-WITH_NATIVE_BRIDGE := true
-# TARGET_CPU_ABI2 must be set to make soong build additional ARM code
-# However, if no native bridge is bundled, the system does not support
-# ARM binaries by default, yet it indicates support through
-# ro.product.cpu.abi2 in build.prop.
-
-# Attempt to reset ro.product.cpu.abi2 using
-# https://github.com/LineageOS/android_build/commit/94282042cac8dc66e9935c8d7455bd323b0b6716
-PRODUCT_BUILD_PROP_OVERRIDES += TARGET_CPU_ABI2=
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.dalvik.vm.isa.arm=x86 \
-    ro.enable.native.bridge.exec=1 \
-    ro.dalvik.vm.native.bridge=libhoudini.so
-
-endif
-
-# Widevine addons
-ifeq ($(USE_WIDEVINE),true)
-
-# Get proprietary files if any exists
-$(call inherit-product, vendor/google/chromeos-x86/target/widevine.mk)
-
-endif
-
 # Optional packages
 PRODUCT_PACKAGES += \
     LiveWallpapersPicker \
@@ -171,6 +144,26 @@ ifeq ($(USE_X86NB),true)
 PRODUCT_PACKAGES += \
     libnb-qemu \
     libnb-qemu-guest
+
+endif
+
+define addon-copy-to-system
+$(shell python "vendor/blissos/copy_files.py" "vendor/google/chromeos-x86/proprietary/$(1)/" "$(2)" "$(PLATFORM_SDK_VERSION)")
+endef
+
+# Houdini addons
+ifeq ($(USE_HOUDINI),true)
+# Copy files
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,houdini,bin) 
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,houdini,etc) 
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,houdini,lib) 
+
+endif
+
+# Widevine addons
+ifeq ($(USE_WIDEVINE),true)
+# Copy files
+PRODUCT_COPY_FILES += $(call addon-copy-to-system,widevine,vendor) 
 
 endif
 
