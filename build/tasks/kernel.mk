@@ -53,7 +53,7 @@
 #                                          modules in root instead of vendor
 #   NEED_KERNEL_MODULE_SYSTEM          = Optional, if true, install kernel
 #                                          modules in system instead of vendor
-
+ifneq ($(TARGET_PC_BUILD),true)
 ifneq ($(TARGET_NO_KERNEL),true)
 
 ## Externally influenced variables
@@ -316,3 +316,4 @@ dtbimage: $(INSTALLED_DTBIMAGE_TARGET)
 endif # BOARD_INCLUDE_DTB_IN_BOOTIMG
 
 endif # TARGET_NO_KERNEL
+endif # TARGET_PC_BUILD
