@@ -55,7 +55,6 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # Bliss Packages
 PRODUCT_PACKAGES += \
-    LatinIME \
     DeskClock \
     ThemePicker \
     BlissUpdater \
@@ -67,7 +66,6 @@ PRODUCT_PACKAGES += \
     AboutBliss \
     BlissStatistics \
     Contacts \
-    SafetyHubPrebuilt \
     Dialer \
     OmniJaws \
     OmniStyle
@@ -93,3 +91,11 @@ PRODUCT_COPY_FILES += \
 # Bliss System Permission
 PRODUCT_COPY_FILES += \
     vendor/bliss/config/permissions/privapp-permissions-bliss-system.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-bliss-system.xml
+
+ifneq ($(BLISS_DESKTOPMODE),true)
+
+PRODUCT_PACKAGES += \
+    Eleven \
+    LatinIME \
+
+endif
