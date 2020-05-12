@@ -161,3 +161,6 @@ $(call inherit-product-if-exists, frameworks/base/data/sounds/GoogleAudio.mk)
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/bliss/config/partner_gms.mk
+
+PRODUCT_COPY_FILES += \
+    vendor/bliss/bootanimation/bootanimation.zip:system/media/bootanimation.zip
